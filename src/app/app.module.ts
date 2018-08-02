@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import {
   MatAutocompleteModule,
@@ -75,6 +76,7 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatNativeDateModule,
     LayoutModule,
     FlexLayoutModule,
+    InfiniteScrollModule
   ],
   providers: [],
   bootstrap: [AppComponent]

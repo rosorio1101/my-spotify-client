@@ -8,24 +8,39 @@ import { Subscription, Observable } from '../../node_modules/rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnChanges {
+export class AppComponent {
   title = 'Spotify Album Searcher';
   albums: Array<Album>;
-  @Input('searchField') searchField: Observable<string>;
+  page: number;
+  albumSearch: string;
 
   constructor(private service: AlbumsService) { }
 
-  ngOnChanges(changes) {
-    if (this.searchField) {
-      this.searchField.subscribe((searchData: string) => {
-        console.log(searchData);
-      });
+  onSearch(albumName: string) {
+    if (this.albumSearch && albumName !== this.albumSearch) {
+      this.albums = [];
     }
-  }
-  onSearch(albumName) {
-    console.log(albumName);
-    this.service.getAlbums(albumName, 1).subscribe((data: Array<Album>) => {
-      this.albums = data;
+
+    this.albumSearch = albumName;
+    if (!this.page) {
+      this.page = 1;
+    } else {
+      this.page++;
+    }  
+      
+    this.service.getAlbums(this.albumSearch, this.page).subscribe((data: Array<Album>) => {
+      console.log(`data ${data}`);
+      if (!this.albums) {
+        this.albums = data;
+      } else {
+        this.albums = this.albums.concat(data);
+      }
+      console.log(`albums ${this.albums}`);
     });
+  }
+  onScroll() {
+    if (this.albumSearch) {
+      this.onSearch(this.albumSearch);
+    }
   }
 }
